@@ -1,6 +1,0 @@
-; Symubruit.def : déclare les paramètres de module.
-
-LIBRARY      "Symubruit.DLL"
-
-EXPORTS
-	
