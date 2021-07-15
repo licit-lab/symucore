@@ -106,10 +106,16 @@ set_property(TARGET SymuCore PROPERTY CXX_STANDARD_REQUIRED ON)
 target_link_libraries(SymuCore ${Boost_DATE_TIME_LIBRARY} ${Boost_LOCALE_LIBRARY})
 
 # Visible
-target_include_directories(SymuCore PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")
+target_include_directories(SymuCore PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<INSTALL_INTERFACE:include>
+)
 
 # Set processor flags
 add_definitions(-DSYMUCORE_EXPORTS)
 
-install(TARGETS SymuCore DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-# install(FILES ${SymuCore_src} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/symucore)
+
+install(TARGETS SymuCore
+        EXPORT SymuCoreTarget
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+)

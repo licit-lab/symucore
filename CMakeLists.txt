@@ -53,4 +53,20 @@ SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 add_subdirectory(symucore)
 
-message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}")
+install(EXPORT SymuCoreTarget DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/symucore)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(${CMAKE_BINARY_DIR}/SymuCore/SymuCoreConfigVersion.cmake
+  VERSION ${SymuCore_VERSION}
+  COMPATIBILITY ExactVersion)
+
+configure_package_config_file(${PROJECT_SOURCE_DIR}/cmake/SymuCoreConfig.cmake.in
+  ${CMAKE_BINARY_DIR}/SymuCore/SymuCoreConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/symucore)
+
+install(
+  FILES
+  ${CMAKE_BINARY_DIR}/SymuCore/SymuCoreConfig.cmake
+  ${CMAKE_BINARY_DIR}/SymuCore/SymuCoreConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/symucore
+  COMPONENT Development)
