@@ -22,3 +22,11 @@ requirements:
   run:
     - boost
     - boost-cpp
+
+
+about:
+  home: https://github.com/licit-lab/symucore
+  license: LGPL-3.0-only
+  license_file: LICENSE
+  summary: Core objects and algorithms for the SymuVia ecosystem.
+  dev_url: https://github.com/licit-lab/symucore
