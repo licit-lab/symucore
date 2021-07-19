@@ -15,41 +15,24 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 
 find_package(Boost COMPONENTS
-    chrono
     date_time
-    locale
-    log
-    thread
-    serialization
-    wserialization
-    filesystem
-    system
-    program_options
     REQUIRED)
-
-    if(Boost_FOUND)
-        message(STATUS "Library Boost is available")
-        message(STATUS "\t ${Boost_CHRONO_LIBRARY}")
-        message(STATUS "\t ${Boost_DATE_TIME_LIBRARY}")
-        message(STATUS "\t ${Boost_LOCALE_LIBRARY}")
-        message(STATUS "\t ${Boost_SERIALIZATION_LIBRARY}")
-        message(STATUS "\t ${Boost_WSERIALIZATION_LIBRARY}")
-        message(STATUS "\t ${Boost_LOG_LIBRARY}")
-        message(STATUS "\t ${Boost_FILESYSTEM_LIBRARY}")
-        message(STATUS "\t ${Boost_THREAD_LIBRARY}")
-        message(STATUS "\t ${Boost_PROGRAM_OPTIONS}")
-        message(STATUS "\t ${Boost_SYSTEM_LIBRARY}")
-        include_directories(${Boost_INCLUDE_DIRS})
-        message(STATUS "\t Boost headers included")
-    else()
-        message(STATUS "\t Boost library is missing")
-    endif()
+    
+if(Boost_FOUND)
+    message(STATUS "Library Boost is available")
+    message(STATUS "\t ${Boost_DATE_TIME_LIBRARY}")
+    include_directories(${Boost_INCLUDE_DIRS})
+    message(STATUS "\t Boost headers included")
+else()
+    message(STATUS "\t Boost library is missing")
+endif()
 
 
 # Define libraries to link
 SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
+include("cmake/macro.cmake")
 
 add_subdirectory(symucore)
 
