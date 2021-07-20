@@ -17,7 +17,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 find_package(Boost COMPONENTS
     date_time
     REQUIRED)
-    
+
 if(Boost_FOUND)
     message(STATUS "Library Boost is available")
     message(STATUS "\t ${Boost_DATE_TIME_LIBRARY}")
@@ -34,7 +34,7 @@ SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 include("cmake/macro.cmake")
 
-add_subdirectory(symucore)
+add_subdirectory(src)
 
 install(EXPORT SymuCoreTarget DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/symucore)
 

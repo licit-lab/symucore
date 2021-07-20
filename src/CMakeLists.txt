@@ -1,7 +1,10 @@
 # Define property to hold all .cpp files
 set_property(GLOBAL PROPERTY SYMUCORE_SRC "")
 
-add_subdirectory("src")
+add_subdirectory("Demand")
+add_subdirectory("Graph")
+add_subdirectory("Users")
+add_subdirectory("Utils")
 
 get_property(SYMUCORE_SRC GLOBAL PROPERTY SYMUCORE_SRC)
 
@@ -17,7 +20,7 @@ target_link_libraries(SymuCore PUBLIC ${Boost_DATE_TIME_LIBRARY})
 
 # Visible
 target_include_directories(SymuCore PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:include/SymuCore>
 )
 
@@ -30,3 +33,5 @@ install(TARGETS SymuCore
         ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
         LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
         RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+install(FILES "SymuCoreExports.h" DESTINATION include/SymuCore)
