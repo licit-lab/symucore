@@ -1,5 +1,7 @@
 # SymuCore
 
+Core objects and algorithms for the SymuVia ecosystem.
+
 ## Installation
 
 ### From sources:
