@@ -34,11 +34,11 @@ public:
     Node * getNode() const;
     const PatternsSwitch & getPatternsSwitch() const;
 
-    virtual void prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions, int nbSimulationInstances, int iInstance) = 0;
-    virtual void fillMeasuredCostsForTravelTimesUpdatePeriod(int iTravelTimesUpdatePeriodIndex, const std::vector<SubPopulation*>& listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions) = 0;
+    virtual void prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, int nbSimulationInstances, int iInstance) = 0;
+    virtual void fillMeasuredCostsForTravelTimesUpdatePeriod(int iTravelTimesUpdatePeriodIndex, const std::vector<SubPopulation*>& listSubPopulations) = 0;
 
     // usefull for costs that can't be computed right away at the end of each travel time update period (ie : marginals in spatial mode)
-    virtual void postProcessCosts(const std::vector<SubPopulation*>& listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions) {}
+    virtual void postProcessCosts(const std::vector<SubPopulation*>& listSubPopulations) {}
 
     virtual Cost* getPenaltyCost(int iSimulationInstance, double t, SubPopulation* pSubPopulation) = 0;
 

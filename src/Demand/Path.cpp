@@ -66,11 +66,11 @@ Cost Path::GetPathCost(int iSimulationInstance, double dbStrartingTime, SubPopul
     if(shouldStartFromEnd)
     {
         // OTK - TODO - bizarre ce test sur +inf ? ca peut arriver ? c'est grave si on renvoie pas +inf ?
-        for(std::vector<Pattern *>::const_reverse_iterator itPattern=m_listPattern.rbegin(); itPattern != m_listPattern.rend() && newCost.getTravelTime() != std::numeric_limits<double>::infinity(); itPattern++)
+        for(std::vector<Pattern *>::const_reverse_iterator itPattern=m_listPattern.rbegin(); itPattern != m_listPattern.rend() && newCost.getCostValue(CF_TravelTime) != std::numeric_limits<double>::infinity(); itPattern++)
         {
             Pattern* pPatternAvt;
             Pattern* pPatternAmt;
-            newCost.plus((*itPattern)->getPatternCost(iSimulationInstance, dbStrartingTime - newCost.getTravelTime(), pSubPopulation));
+            newCost.plus((*itPattern)->getPatternCost(iSimulationInstance, dbStrartingTime - newCost.getCostValue(CF_TravelTime), pSubPopulation));
             if(itPattern+1 != m_listPattern.rend())
             {
                 pPatternAvt = (*itPattern);
@@ -78,18 +78,18 @@ Cost Path::GetPathCost(int iSimulationInstance, double dbStrartingTime, SubPopul
                 if(pPatternAvt->getPatternType() == PT_Undefined || pPatternAmt->getPatternType() == PT_Undefined)
                     continue;
 
-                newCost.plus(pPatternAvt->getLink()->getUpstreamNode()->getPenaltyCost(iSimulationInstance, pPatternAmt, pPatternAvt, dbStrartingTime - newCost.getTravelTime(), pSubPopulation));
+                newCost.plus(pPatternAvt->getLink()->getUpstreamNode()->getPenaltyCost(iSimulationInstance, pPatternAmt, pPatternAvt, dbStrartingTime - newCost.getCostValue(CF_TravelTime), pSubPopulation));
             }
         }
     }
     else
     {
 
-        for(std::vector<Pattern *>::const_iterator itPattern=m_listPattern.begin(); itPattern != m_listPattern.end() && newCost.getTravelTime() != std::numeric_limits<double>::infinity(); itPattern++)
+        for(std::vector<Pattern *>::const_iterator itPattern=m_listPattern.begin(); itPattern != m_listPattern.end() && newCost.getCostValue(CF_TravelTime) != std::numeric_limits<double>::infinity(); itPattern++)
         {
             Pattern* pPatternAmt;
             Pattern* pPatternAvt;
-            newCost.plus((*itPattern)->getPatternCost(iSimulationInstance, dbStrartingTime + newCost.getTravelTime(), pSubPopulation));
+            newCost.plus((*itPattern)->getPatternCost(iSimulationInstance, dbStrartingTime + newCost.getCostValue(CF_TravelTime), pSubPopulation));
             if(itPattern+1 != m_listPattern.end())
             {
                 pPatternAmt = (*itPattern);
@@ -97,7 +97,7 @@ Cost Path::GetPathCost(int iSimulationInstance, double dbStrartingTime, SubPopul
                 if(pPatternAvt->getPatternType() == PT_Undefined || pPatternAmt->getPatternType() == PT_Undefined)
                     continue;
 
-                newCost.plus(pPatternAmt->getLink()->getDownstreamNode()->getPenaltyCost(iSimulationInstance, pPatternAmt, pPatternAvt, dbStrartingTime + newCost.getTravelTime(), pSubPopulation));
+                newCost.plus(pPatternAmt->getLink()->getDownstreamNode()->getPenaltyCost(iSimulationInstance, pPatternAmt, pPatternAvt, dbStrartingTime + newCost.getCostValue(CF_TravelTime), pSubPopulation));
             }
         }
     }

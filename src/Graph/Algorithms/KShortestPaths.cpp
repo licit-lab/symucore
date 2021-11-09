@@ -155,7 +155,7 @@ map<Origin*, map<Destination*, vector<ValuetedPath*> > > KShortestPaths::getShor
             if (m_nMethod != 0)
             {
                 const Cost & refCost = m_nMethodRefPath.GetPathCost(iSimulationInstance, dbArrivalTime, pSubPopulation, true);
-                ValuetedPath* pRefpath = new ValuetedPath(m_nMethodRefPath, refCost.getCostValue(), refCost.getTravelTime());
+                ValuetedPath* pRefpath = new ValuetedPath(m_nMethodRefPath, refCost.getCostValue(), refCost.getCostValue(CF_TravelTime));
                 refPath.push_back(pRefpath);
             }
 
@@ -172,7 +172,7 @@ map<Origin*, map<Destination*, vector<ValuetedPath*> > > KShortestPaths::getShor
                     dbRemainingCoeff -= predef.getCoeff();
 
                     const Cost & predefCost = predef.getPath().GetPathCost(iSimulationInstance, dbArrivalTime, pSubPopulation, true);
-                    ValuetedPath * pPredefinedPath = new ValuetedPath(predef.getPath(), predefCost.getCostValue(), predefCost.getTravelTime());
+                    ValuetedPath * pPredefinedPath = new ValuetedPath(predef.getPath(), predefCost.getCostValue(), predefCost.getCostValue(CF_TravelTime));
                     pPredefinedPath->setIsPredefined(true);
                     pPredefinedPath->setStrName(predef.getStrName());
                     pPredefinedPath->setPredefinedJunctionNode(predef.getJunction());
@@ -352,7 +352,7 @@ map<Origin*, map<Destination*, vector<ValuetedPath*> > > KShortestPaths::getShor
                 if (!bRefPathIsComputed)
                 {
                     const Cost & predefCost = pRefPath->GetPath().GetPathCost(iSimulationInstance, dbArrivalTime, pSubPopulation, true);
-                    ValuetedPath * pRefPathResult = new ValuetedPath(pRefPath->GetPath(), predefCost.getCostValue(), predefCost.getTravelTime());
+                    ValuetedPath * pRefPathResult = new ValuetedPath(pRefPath->GetPath(), predefCost.getCostValue(), predefCost.getCostValue(CF_TravelTime));
                     pRefPathResult->setIsPredefined(true);
                     pRefPathResult->setPredefinedJunctionNode(NULL);
                     pRefPathResult->setPenalizedCost(pRefPathResult->GetCost());
@@ -426,13 +426,13 @@ double KShortestPaths::ComputeCommonalityFactor(int iSimulationInstance, vector<
             if(itSamePattern != listPatternCurrentPath.end())
             {
                 Pattern* pPattern = (*itSamePattern);
-                dbTTShared += pPattern->getPatternCost(iSimulationInstance, dbArrivalTime, pSubPopulation)->getTravelTime();
+                dbTTShared += pPattern->getPatternCost(iSimulationInstance, dbArrivalTime, pSubPopulation)->getCostValue(CF_TravelTime);
 
                 itSamePattern++;
                 if((iPattern+1 < listPatternPathFound.size()) && (itSamePattern != listPatternCurrentPath.end()) && (listPatternPathFound[iPattern+1] == (*itSamePattern)))
                 {
                     //add the time for Penalty
-                    dbTTShared += pPattern->getLink()->getDownstreamNode()->getPenaltyCost(iSimulationInstance, pPattern, (*itSamePattern), dbArrivalTime, pSubPopulation)->getTravelTime();
+                    dbTTShared += pPattern->getLink()->getDownstreamNode()->getPenaltyCost(iSimulationInstance, pPattern, (*itSamePattern), dbArrivalTime, pSubPopulation)->getCostValue(CF_TravelTime);
                 }
             }
         }

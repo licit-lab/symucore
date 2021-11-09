@@ -29,7 +29,7 @@ const std::vector<ListTimeFrame<std::map<SubPopulation*, Cost> > > & Penalty::ge
     return m_TemporalCosts;
 }
 
-void Penalty::prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions, int nbSimulationInstances, int iInstance)
+void Penalty::prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, int nbSimulationInstances, int iInstance)
 {
     m_TemporalCosts.clear();
     m_TemporalCosts.resize(iInstance==0?nbSimulationInstances:1);
@@ -43,7 +43,7 @@ void Penalty::prepareTimeFrames(double startPeriodTime, double endPeriodTime, do
 
         ListTimeFrame<std::map<SubPopulation*, Cost>  > & mapTemporalCosts = m_TemporalCosts[0];
         mapTemporalCosts.addTimeFrame(startTravelTimesUpdatePeriodTime, endTravelTimesUpdatePeriodTime, boost::make_shared<std::map<SubPopulation*, Cost>>());
-        fillMeasuredCostsForTravelTimesUpdatePeriod(iTravelTimesUpdatePeriod, listSubPopulations, mapCostFunctions);
+        fillMeasuredCostsForTravelTimesUpdatePeriod(iTravelTimesUpdatePeriod, listSubPopulations);
 
         currentTime += travelTimesUpdatePeriod;
     }

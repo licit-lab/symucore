@@ -277,7 +277,7 @@ std::vector<vector<ValuetedPath*> > Dijkstra::getShortestPaths(int iSimulationIn
 
                     if (pPatternCost.getCostValue() >= 0.0)
                     {
-                        TimedNode* newTimedNode = new TimedNode(pNextNode, timedInitialNode, pPattern, dbCostValue, graphTraverser.getNextTime(dbStartingPointTime, pPatternCost.getTravelTime()));
+                        TimedNode* newTimedNode = new TimedNode(pNextNode, timedInitialNode, pPattern, dbCostValue, graphTraverser.getNextTime(dbStartingPointTime, pPatternCost.getCostValue(CF_TravelTime)));
                         listTimedNodes.push_back(newTimedNode);
 
                         double dbCostValueWithHeuristic = dbCostValue;
@@ -351,7 +351,7 @@ std::vector<vector<ValuetedPath*> > Dijkstra::getShortestPaths(int iSimulationIn
 					continue;
 				}
 
-                Cost patternCost = GetTotalPatternCost(iSimulationInstance, pPattern, graphTraverser.getNextTime(bUseCostsForTemporalAlgorithm ? graphTraverser.getNextTime(dbStartingPointTime, currentTimedNode->m_dTotalCost) : currentTimedNode->m_dTotalTime, bUseCostsForTemporalAlgorithm ? currentAbstractPenaltyCost->getCostValue() : currentAbstractPenaltyCost->getTravelTime()), pSubPopulation);
+                Cost patternCost = GetTotalPatternCost(iSimulationInstance, pPattern, graphTraverser.getNextTime(bUseCostsForTemporalAlgorithm ? graphTraverser.getNextTime(dbStartingPointTime, currentTimedNode->m_dTotalCost) : currentTimedNode->m_dTotalTime, bUseCostsForTemporalAlgorithm ? currentAbstractPenaltyCost->getCostValue() : currentAbstractPenaltyCost->getCostValue(CF_TravelTime)), pSubPopulation);
 
                 if (patternCost.getCostValue() >= 0.0 && patternCost.getCostValue() < numeric_limits<double>::infinity())
                 {
@@ -370,7 +370,7 @@ std::vector<vector<ValuetedPath*> > Dijkstra::getShortestPaths(int iSimulationIn
                     if (iterCurrentWeight == mapWeights.end())
                     {
                         // first occurence of the target node : add it to the map
-                        TimedNode* newTimedNode = new TimedNode(pNextNode, currentTimedNode, pPattern, currentCostValue, graphTraverser.getNextTime(currentTimedNode->m_dTotalTime, patternCost.getTravelTime() + currentAbstractPenaltyCost->getTravelTime()));
+                        TimedNode* newTimedNode = new TimedNode(pNextNode, currentTimedNode, pPattern, currentCostValue, graphTraverser.getNextTime(currentTimedNode->m_dTotalTime, patternCost.getCostValue(CF_TravelTime) + currentAbstractPenaltyCost->getCostValue(CF_TravelTime)));
 						listTimedNodes.push_back(newTimedNode);
                         mapWaitingNodes[dbCurrentCostValueWithHeuristic].push_back(newTimedNode);
 						mapWeights[pNextNode->getStrName()][pPattern->getUniqueID()] = dbCurrentCostValueWithHeuristic;
@@ -382,7 +382,7 @@ std::vector<vector<ValuetedPath*> > Dijkstra::getShortestPaths(int iSimulationIn
                         if (iterCurrentPattern == iterCurrentWeight->second.end())
                         {
                             // first occurence of the target node : add it to the map
-                            TimedNode* newTimedNode = new TimedNode(pNextNode, currentTimedNode, pPattern, currentCostValue, graphTraverser.getNextTime(currentTimedNode->m_dTotalTime, patternCost.getTravelTime() + currentAbstractPenaltyCost->getTravelTime()));
+                            TimedNode* newTimedNode = new TimedNode(pNextNode, currentTimedNode, pPattern, currentCostValue, graphTraverser.getNextTime(currentTimedNode->m_dTotalTime, patternCost.getCostValue(CF_TravelTime) + currentAbstractPenaltyCost->getCostValue(CF_TravelTime)));
 							listTimedNodes.push_back(newTimedNode);
                             mapWaitingNodes[dbCurrentCostValueWithHeuristic].push_back(newTimedNode);
                             iterCurrentWeight->second[pPattern->getUniqueID()] = dbCurrentCostValueWithHeuristic;
@@ -418,7 +418,7 @@ std::vector<vector<ValuetedPath*> > Dijkstra::getShortestPaths(int iSimulationIn
                             // update cost in the TimedNode object :
                             pNewTimedNode->m_dTotalCost = currentCostValue;
                             pNewTimedNode->m_pPredecossorNode = currentTimedNode;
-                            pNewTimedNode->m_dTotalTime = graphTraverser.getNextTime(currentTimedNode->m_dTotalTime, patternCost.getTravelTime() + currentAbstractPenaltyCost->getTravelTime());
+                            pNewTimedNode->m_dTotalTime = graphTraverser.getNextTime(currentTimedNode->m_dTotalTime, patternCost.getCostValue(CF_TravelTime) + currentAbstractPenaltyCost->getCostValue(CF_TravelTime));
 
                             // update cost in the mapWeights container :
                             iterCurrentPattern->second = dbCurrentCostValueWithHeuristic;
@@ -472,36 +472,38 @@ Cost Dijkstra::GetTotalPatternCost(int iSimulationInstance, Pattern* pPattern, d
 
     if (pCost != NULL)
     {
-        // unpenalized cost
+        // pCost copied to avoid modifying it
         Cost resCost = *pCost;
 
         // apply the penalization factor to the cost
         std::map<Pattern*, double>::iterator itMap = m_mapPenalizedPatterns.find(pPattern);
+        double penalysingFactor = itMap->second;
         if (itMap != m_mapPenalizedPatterns.end())
         {
             if (pCost->getCostValue() == 0)
             {
                 // Special case of null cost patterns (touching areas with null area costs used by SymuVia for example),
                 // we use directly the percentage as the penalized cost to avoid infinite loops when computing k-shortest paths
-                resCost.setUsedCostValue(itMap->second);
+                resCost.setCostValue(CF_Modified_Cost, penalysingFactor);
             }
             else
             {
-                resCost.setUsedCostValue(pCost->getCostValue() * (1 + itMap->second));
+                resCost.setCostValue(CF_Modified_Cost, pCost->getCostValue() * (1 + penalysingFactor));
             }
         }
+        resCost.setUsedCostFunction(CF_Modified_Cost);
 
         // if euclidian heuristic, add the functional class related term :
         if (m_eHeuristic == SPH_EUCLIDIAN)
         {
-            resCost.setUsedCostValue(resCost.getCostValue() + pCost->getCostValue() * m_dbAStarBeta * pPattern->getFuncClass());
+            resCost.setCostValue(CF_Modified_Cost, resCost.getCostValue() + pCost->getCostValue() * m_dbAStarBeta * pPattern->getFuncClass());
         }
 
         return resCost;
     }
     else
     {
-        return Cost(-1.0, -1.0);
+        return Cost(-1.0);
     }
 }
 

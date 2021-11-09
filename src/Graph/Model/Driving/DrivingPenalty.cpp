@@ -29,7 +29,7 @@ const std::vector<ListTimeFrame<std::map<SubPopulation *, Cost> > > &DrivingPena
     return m_mapTemporalCosts;
 }
 
-void DrivingPenalty::prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions, int nbSimulationInstances, int iInstance)
+void DrivingPenalty::prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, int nbSimulationInstances, int iInstance)
 {
     m_mapTemporalCosts.clear();
     m_mapTemporalCosts.resize(iInstance==0?nbSimulationInstances:1);
@@ -43,7 +43,7 @@ void DrivingPenalty::prepareTimeFrames(double startPeriodTime, double endPeriodT
 
         ListTimeFrame<std::map<SubPopulation*, Cost>  > & mapTemporalCosts = m_mapTemporalCosts[0];
         mapTemporalCosts.addTimeFrame(startTravelTimesUpdatePeriodTime, endTravelTimesUpdatePeriodTime, boost::make_shared<std::map<SubPopulation*, Cost>>());
-        fillMeasuredCostsForTravelTimesUpdatePeriod(iTravelTimesUpdatePeriod, listSubPopulations, mapCostFunctions);
+        fillMeasuredCostsForTravelTimesUpdatePeriod(iTravelTimesUpdatePeriod, listSubPopulations);
 
         currentTime += travelTimesUpdatePeriod;
     }

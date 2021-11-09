@@ -26,7 +26,7 @@ namespace SymuCore {
         void SetNbVehicles(size_t iPeriodIndex, double dbStartTime, double dbEndTime, SymuCore::MacroType * pMacroType, double dbNbVehicles, double dbNbVehiclesForAllMacroTypes,
             double dbTravelTimeForAllMacroTypes);
 
-        void ComputeMarginal(const std::map<MacroType*, std::vector<std::pair<SymuCore::CostFunction, SubPopulation*> > > & listMacroType,
+        void ComputeMarginal(const std::map<MacroType*, std::vector<std::pair<SymuCore::CostFunction, SubPopulation*>> > & listMacroType,
             const std::map<MacroType*, bool> & forbiddenMacroTypes,
             const SymuCore::ListTimeFrame<std::map<SymuCore::SubPopulation*, SymuCore::Cost> > & temporalCosts,
             double dbMaxMarginalsValue, double dbPenalisationRatio);

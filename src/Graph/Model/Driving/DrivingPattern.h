@@ -25,7 +25,7 @@ public:
     const std::vector<ListTimeFrame<std::map<SubPopulation*, Cost> > > & getTemporalCosts() const;
     std::vector<ListTimeFrame<std::map<SubPopulation *, Cost> > > &getTemporalCosts();
 
-    virtual void prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation *> &listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions, int nbSimulationInstances, int iInstance);
+    virtual void prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation *> &listSubPopulations, int nbSimulationInstances, int iInstance);
     virtual Cost* getPatternCost(int iSimulationInstance, double t, SubPopulation* pSubPopulation);
 
     virtual void fillFromSecondaryInstance(Pattern * pFrom, int iInstance);

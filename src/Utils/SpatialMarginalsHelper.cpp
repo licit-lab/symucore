@@ -221,7 +221,7 @@ double computeITTFromQuadraticRegresion(double dbPrevTT, double dbPrevNVeh, doub
 }
 
 void SpatialMarginalsHelper::ComputeMarginal(
-    const std::map<MacroType*, std::vector<std::pair<SymuCore::CostFunction, SubPopulation*> > > & listMacroType,
+    const std::map<MacroType*, std::vector<std::pair<SymuCore::CostFunction, SubPopulation*>> > & listMacroType,
     const std::map<MacroType*, bool> & forbiddenMacroTypes,
     const ListTimeFrame<std::map<SubPopulation*, Cost> > & temporalCosts,
     double dbMaxMarginalsValue, double dbPenalisationRatio)
@@ -229,9 +229,10 @@ void SpatialMarginalsHelper::ComputeMarginal(
     size_t nbPeriods = temporalCosts.size();
 
     // For each Macro-type
-    for (std::map<MacroType*, std::vector<std::pair<SymuCore::CostFunction, SubPopulation*> > >::const_iterator iter = listMacroType.begin(); iter != listMacroType.end(); ++iter)
+    for (std::map<MacroType*, std::vector<std::pair<SymuCore::CostFunction, SubPopulation*>> >::const_iterator iter = listMacroType.begin(); iter != listMacroType.end(); ++iter)
     {
         MacroType * pMacroType = iter->first;
+        std::vector<std::pair<SymuCore::CostFunction, SubPopulation*>> costFunctionPopulationPairVector = iter->second;
         bool bIsForbidden = forbiddenMacroTypes.at(pMacroType);
 
         if (nbPeriods == 1)
@@ -241,23 +242,13 @@ void SpatialMarginalsHelper::ComputeMarginal(
             {
                 std::map<SubPopulation *, Cost> * pCostVariation = temporalCosts.getTimeFrame(0).getData();
 
-                for (size_t iSubPop = 0; iSubPop < iter->second.size(); iSubPop++)
+                for (size_t iSubPop = 0; iSubPop < costFunctionPopulationPairVector.size(); iSubPop++)
                 {
-                    const std::pair<SymuCore::CostFunction, SubPopulation*> & subPopInfo = iter->second[iSubPop];
+                    const std::pair<SymuCore::CostFunction, SubPopulation*> & subPopInfo = costFunctionPopulationPairVector[iSubPop];
                     Cost & cost = pCostVariation->at(subPopInfo.second);
-                    if (subPopInfo.first == CF_Marginals)
+                    if (cost.getCostValue(CF_Marginals) > dbMaxMarginalsValue)
                     {
-                        if (cost.getCostValue() > dbMaxMarginalsValue)
-                        {
-                            cost.setUsedCostValue(dbMaxMarginalsValue);
-                        }
-                    }
-                    else
-                    {
-                        if (cost.getOtherCostValue(CF_Marginals) > dbMaxMarginalsValue)
-                        {
-                            cost.setOtherCostValue(CF_Marginals, dbMaxMarginalsValue);
-                        }
+                        cost.setCostValue(CF_Marginals, dbMaxMarginalsValue);
                     }
                 }
             }
@@ -328,18 +319,11 @@ void SpatialMarginalsHelper::ComputeMarginal(
 
                     const TimeFrame<std::map<SubPopulation *, Cost>> & costVariation = temporalCosts.getTimeFrame(iPeriod);
 
-                    for (size_t iSubPop = 0; iSubPop < iter->second.size(); iSubPop++)
+                    for (size_t iSubPop = 0; iSubPop < costFunctionPopulationPairVector.size(); iSubPop++)
                     {
-                        const std::pair<CostFunction, SubPopulation*> & subpopInfo = iter->second.at(iSubPop);
+                        const std::pair<CostFunction, SubPopulation*> & subpopInfo = costFunctionPopulationPairVector.at(iSubPop);
                         Cost & cost = costVariation.getData()->operator[](subpopInfo.second);
-                        if (subpopInfo.first == CF_Marginals)
-                        {
-                            cost.setUsedCostValue(dbMarginal);
-                        }
-                        else
-                        {
-                            cost.setOtherCostValue(CF_Marginals, dbMarginal);
-                        }
+                        cost.setCostValue(CF_Marginals, dbMarginal);
                     }
                 }
             }

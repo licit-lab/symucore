@@ -31,7 +31,7 @@ public:
     void setLine(PublicTransportLine* pLine);
 
     virtual void addTimeFrame(double tBeginTime, double tEndTime);
-    virtual void prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions, int nbSimulationInstances, int iInstance);
+    virtual void prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, int nbSimulationInstances, int iInstance);
     virtual Cost* getPatternCost(int iSimulationInstance, double t, SubPopulation* pSubPopulation);
     virtual std::string toString() const;
 

@@ -47,9 +47,24 @@ namespace SymuCore {
     enum CostFunction     //define each possible cost function here
     {
         CF_Undefined = 0,
+        CF_Modified_Cost,
+        CF_Total_Cost_Sum,
+        CF_DriveTime,
+        CF_PassiveRideTime,
+        CF_WaitTime,
+        CF_WalkTime,
         CF_TravelTime,
-        CF_Marginals,
-		CF_Emissions
+        CF_TightCurvesNumber,
+        CF_IntersectionNumber,
+        CF_InterchangeNumber,
+        CF_NoiseEmissions,
+		CF_CarbonEmission,
+		CF_AtmosphericEmission,
+		CF_EnergyConsumption,
+		CF_FuelConsumption,
+		CF_OwnVehicleDamage,
+		CF_DirectMonetaryCost,
+        CF_Marginals
     };
 
     enum ShortestPathHeuristic // Heuristic for the shortest path calculations

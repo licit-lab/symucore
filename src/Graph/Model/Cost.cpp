@@ -1,19 +1,15 @@
 ﻿#include "Cost.h"
 
 #include <limits>
+#include <iostream>       // std::cerr
+#include <stdexcept>      // std::out_of_range
 
 using namespace SymuCore;
 
-Cost::Cost()
+Cost::Cost(double dCostValue, CostFunction eCostFunction)
 {
-	m_dbCostValue = 0;
-	m_dbTravelTime = 0;
-}
-
-Cost::Cost(double dCostValue, double dTravelTime)
-{
-	m_dbCostValue = dCostValue;
-    m_dbTravelTime = dTravelTime;
+    setUsedCostFunction(eCostFunction);
+    setCostValue(eCostFunction,dCostValue);
 }
 
 Cost::~Cost()
@@ -21,20 +17,20 @@ Cost::~Cost()
 
 }
 
-void Cost::setUsedCostValue(double dCostValue)
+void Cost::setUsedCostFunction(CostFunction eCostFunction)
 {
-    m_dbCostValue = dCostValue;
+    m_usedCostFunction = eCostFunction;
 }
 
-void Cost::setOtherCostValue(CostFunction eCostFunction, double dbValue)
+void Cost::setCostValue(CostFunction eCostFunction, double dbValue)
 {
-    m_mapOtherCosts[eCostFunction] = dbValue;
+    m_costsMap[eCostFunction] = dbValue;
 }
 
-double Cost::getOtherCostValue(CostFunction eCostFunction) const
+double Cost::getCostValue(CostFunction eCostFunction) const
 {
-    std::map<CostFunction, double>::const_iterator iter = m_mapOtherCosts.find(eCostFunction);
-    if (iter != m_mapOtherCosts.end())
+    std::map<CostFunction, double>::const_iterator iter = m_costsMap.find(eCostFunction);
+    if (iter != m_costsMap.end())
     {
         return iter->second;
     }
@@ -44,44 +40,37 @@ double Cost::getOtherCostValue(CostFunction eCostFunction) const
     }
 }
 
-double Cost::getCostValue(CostFunction eCostFunction) const
-{
-    std::map<CostFunction, double>::const_iterator iter = m_mapOtherCosts.find(eCostFunction);
-    if (iter != m_mapOtherCosts.end())
-    {
-        return iter->second;
-    }
-    else
-    {
-        return m_dbCostValue;
-    }
-}
-
 double Cost::getCostValue() const
 {
-	return m_dbCostValue;
-}
-
-void Cost::setTravelTime(double dTravelTime)
-{
-    m_dbTravelTime = dTravelTime;
-}
-
-double Cost::getTravelTime() const
-{
-    return m_dbTravelTime;
+    try{
+	    return m_costsMap.at(m_usedCostFunction);
+    }
+    catch (const std::out_of_range& oor) {
+        //If Cost not found, it is not yet defined
+        return 0;
+    }
+    catch(const std::exception e){
+        std::cerr << "Unexpected Error in Cost: " << e.what() << '\n';
+        return 0;
+    }
 }
 
 // OTK - TODO - Pourquoi pas un vrai opérateur + ?
 void Cost::plus(Cost * otherCost)
 {
-    // rmq. we don't bother to process m_mapOtherCosts here since it is only use for now to output costs pattern per pattern or penalty per penalty.
+    CostFunction key;
     if(!otherCost)
     {
-        m_dbCostValue = std::numeric_limits<double>::infinity();
-        m_dbTravelTime = std::numeric_limits<double>::infinity();
-    }else{
-        m_dbCostValue += otherCost->getCostValue();
-        m_dbTravelTime += otherCost->getTravelTime();
+        for(std::map<CostFunction, double>::iterator it = m_costsMap.begin(); it != m_costsMap.end(); ++it) {
+            key = it->first;
+            m_costsMap[key] = std::numeric_limits<double>::infinity();
+        }
+    }
+    else
+    {
+        for(std::map<CostFunction, double>::iterator it = m_costsMap.begin(); it != m_costsMap.end(); ++it) {
+            key = it->first;
+            m_costsMap[key] += otherCost->getCostValue(key);
+        }
     }
 }

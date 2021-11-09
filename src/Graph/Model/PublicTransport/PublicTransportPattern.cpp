@@ -53,7 +53,7 @@ void PublicTransportPattern::addTimeFrame(double tBeginTime, double tEndTime)
     m_TemporalCosts[0].addTimeFrame(tBeginTime, tEndTime, boost::make_shared<Cost>());
 }
 
-void PublicTransportPattern::prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation *> &listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions, int nbSimulationInstances, int iInstance)
+void PublicTransportPattern::prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation *> &listSubPopulations, int nbSimulationInstances, int iInstance)
 {
     m_TemporalCosts.clear();
     m_TemporalCosts.resize(iInstance==0?nbSimulationInstances:1);
@@ -67,7 +67,7 @@ void PublicTransportPattern::prepareTimeFrames(double startPeriodTime, double en
 
         ListTimeFrame<Cost> & temporalCosts = m_TemporalCosts[0];
         temporalCosts.addTimeFrame(startTravelTimesUpdatePeriodTime, endTravelTimesUpdatePeriodTime, boost::make_shared<Cost>());
-        fillMeasuredCostsForTravelTimesUpdatePeriod(iTravelTimesUpdatePeriod, listSubPopulations, mapCostFunctions);
+        fillMeasuredCostsForTravelTimesUpdatePeriod(iTravelTimesUpdatePeriod, listSubPopulations);
 
         currentTime += travelTimesUpdatePeriod;
     }

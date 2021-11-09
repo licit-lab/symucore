@@ -3,6 +3,8 @@
 #include"Demand/Motive.h"
 #include"Demand/Trip.h"
 #include"Demand/Population.h"
+#include <iostream>       // std::cerr
+#include <stdexcept>      // std::out_of_range
 
 using namespace SymuCore;
 
@@ -12,6 +14,7 @@ SubPopulation::SubPopulation()
     m_dbInitialWalkRadius = -1;
     m_pPopulation = NULL;
     m_pMotive = NULL;
+    m_costFunctionWeightMap[CF_TravelTime] = 1;
 }
 
 SubPopulation::SubPopulation(const std::string& strName)
@@ -21,6 +24,7 @@ SubPopulation::SubPopulation(const std::string& strName)
     m_dbInitialWalkRadius = -1;
     m_pPopulation = NULL;
     m_pMotive = NULL;
+    m_costFunctionWeightMap[CF_TravelTime] = 1;
 }
 
 SubPopulation::~SubPopulation()
@@ -96,4 +100,26 @@ std::vector<Trip *> &SubPopulation::GetListUsers()
 void SubPopulation::SetListUsers(const std::vector<Trip *> &listUsers)
 {
     m_listUsers = listUsers;
+}
+
+
+double SubPopulation::GetCostFunctionWeight(CostFunction function) const
+{
+    try{
+	    return m_costFunctionWeightMap.at(function);
+    }
+    catch (const std::out_of_range& oor) {
+        //If weight not found, it is not defined, and we consider it 0
+        return 0;
+    }
+    catch(const std::exception e){
+        std::cerr << "Unexpected Error: " << e.what() << '\n';
+        return 0;
+    }
+}
+
+
+void SubPopulation::SetCostFunctionWeight(CostFunction function, double dWeight)
+{
+    m_costFunctionWeightMap[function] = dWeight;
 }

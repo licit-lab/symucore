@@ -24,7 +24,7 @@ public:
     std::vector<ListTimeFrame<std::map<SubPopulation*, Cost> > > & getTemporalCosts();
     const std::vector<ListTimeFrame<std::map<SubPopulation*, Cost> > > & getTemporalCosts() const;
 
-    virtual void prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation *> &listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions, int nbSimulationInstances, int iInstance);
+    virtual void prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation *> &listSubPopulations, int nbSimulationInstances, int iInstance);
 
     virtual Cost* getPenaltyCost(int iSimulationInstance, double t, SubPopulation* pSubPopulation);
 
