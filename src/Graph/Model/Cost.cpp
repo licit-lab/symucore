@@ -74,3 +74,23 @@ void Cost::plus(Cost * otherCost)
         }
     }
 }
+
+void Cost::sumCostFunctions(std::map<CostFunction, double> weights)
+{
+    m_costsMap[CF_Total_Cost_Sum] = 0;
+    for(std::map<CostFunction, double>::iterator it = weights.begin(); it != weights.end(); ++it) {
+        double weightedCost = 0;
+        try{
+            weightedCost = m_costsMap.at(it->first) * it->second;
+        }
+        catch (const std::out_of_range& oor) {
+            //If Cost not found, it is not yet defined
+            weightedCost = std::numeric_limits<double>::infinity();
+        }
+        catch(const std::exception e){
+            std::cerr << "Unexpected Error in Cost Sum: " << e.what() << '\n';
+        }
+        m_costsMap[CF_Total_Cost_Sum] += weightedCost;
+    }
+    setUsedCostFunction(CF_Total_Cost_Sum);
+}

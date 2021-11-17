@@ -28,7 +28,7 @@ public:
     //setters
     void setUsedCostFunction(CostFunction eCostFunction);
     void setCostValue(CostFunction eCostFunction, double dbValue);
-
+    void sumCostFunctions(std::map<CostFunction, double> weights);
 
     void plus(Cost *otherCost);
 

@@ -1,5 +1,6 @@
 #include "Path.h"
 #include "Graph/Model/Cost.h"
+#include "SubPopulation.h"
 
 using namespace SymuCore;
 using namespace std;
@@ -102,6 +103,7 @@ Cost Path::GetPathCost(int iSimulationInstance, double dbStrartingTime, SubPopul
         }
     }
 
+    newCost.sumCostFunctions(pSubPopulation->GetCostFunctionWeightMap());
     return newCost;
 }
 

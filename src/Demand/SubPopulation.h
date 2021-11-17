@@ -36,6 +36,7 @@ public:
     double GetInitialWalkSpeed() const;
     double GetInitialWalkRadius() const;
     double GetCostFunctionWeight(CostFunction function) const;
+    std::map<CostFunction, double> GetCostFunctionWeightMap() const;
 
     void SetListUsers(const std::vector<Trip *> &listUsers);
     void SetPopulation(Population *pPopulation);

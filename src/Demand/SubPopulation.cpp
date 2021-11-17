@@ -123,3 +123,8 @@ void SubPopulation::SetCostFunctionWeight(CostFunction function, double dWeight)
 {
     m_costFunctionWeightMap[function] = dWeight;
 }
+
+std::map<CostFunction, double> SubPopulation::GetCostFunctionWeightMap() const
+{
+    return m_costFunctionWeightMap;
+}
