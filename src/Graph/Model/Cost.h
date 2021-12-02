@@ -18,6 +18,8 @@ class SYMUCORE_DLL_DEF Cost {
 
 public:
 
+    static std::map<std::string ,CostFunction> CF_NameMap;
+
     Cost(double dCostValue = 0, CostFunction eCostFunction = CF_TravelTime);
     virtual ~Cost();
 
@@ -38,7 +40,6 @@ private:
     std::map<CostFunction, double> m_costsMap;
 };
 }
-
 #pragma warning(pop)
 
 #endif // SYMUCORE_PATTERNSSWITCH_H

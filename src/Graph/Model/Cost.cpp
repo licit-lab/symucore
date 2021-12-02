@@ -98,3 +98,22 @@ void Cost::sumCostFunctions(std::map<CostFunction, double> weights)
     m_costsMap[CF_Total_Cost_Sum] /= totalWeight;
     setUsedCostFunction(CF_Total_Cost_Sum);
 }
+
+std::map<std::string ,CostFunction> Cost::CF_NameMap =
+    {
+        {"DriveTime", CF_DriveTime},
+        {"PassiveRideTime", CF_PassiveRideTime},
+        {"WaitTime", CF_WaitTime},
+        {"WalkTime", CF_WalkTime},
+        {"TravelTime", CF_TravelTime},
+        {"TightCurvesNumber", CF_TightCurvesNumber},
+        {"IntersectionNumber", CF_IntersectionNumber},
+        {"InterchangeNumber", CF_InterchangeNumber},
+        {"NoiseEmissions", CF_NoiseEmissions},
+		{"CarbonEmission", CF_CarbonEmission},
+		{"AtmosphericEmission", CF_AtmosphericEmission},
+		{"EnergyConsumption", CF_EnergyConsumption},
+		{"FuelConsumption", CF_FuelConsumption},
+		{"OwnVehicleDamage", CF_OwnVehicleDamage},
+		{"DirectMonetaryCost", CF_DirectMonetaryCost}
+    };
