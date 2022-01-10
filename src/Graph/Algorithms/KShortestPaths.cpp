@@ -288,17 +288,16 @@ map<Origin*, map<Destination*, vector<ValuetedPath*> > > KShortestPaths::getShor
             for (size_t iPath = 0; iPath < predefinedPaths.size(); iPath++)
             {
                 ValuetedPath * pPredefPath = predefinedPaths.at(iPath);
-                for (vector<ValuetedPath*>::iterator iterComputedPath = alreadyFoundPaths.begin(); iterComputedPath != alreadyFoundPaths.end();)
+                for (vector<ValuetedPath*>::iterator iterComputedPath = alreadyFoundPaths.begin(); iterComputedPath != alreadyFoundPaths.end();iterComputedPath++)
                 {
                     ValuetedPath * pComputedPath = *iterComputedPath;
                     if (pComputedPath->GetPath() == pPredefPath->GetPath())
                     {
                         // computed path already is in the predefined paths :
                         delete pComputedPath;
-                        iterComputedPath = alreadyFoundPaths.erase(iterComputedPath);
+                        alreadyFoundPaths.erase(iterComputedPath);
                         break;
                     }
-                    ++iterComputedPath;
                 }
             }
 
@@ -307,16 +306,15 @@ map<Origin*, map<Destination*, vector<ValuetedPath*> > > KShortestPaths::getShor
             {
                 nNbPlusCourtChemin--;
                 ValuetedPath * pRefPath = refPath.front();
-                for (vector<ValuetedPath*>::iterator iterComputedPath = alreadyFoundPaths.begin(); iterComputedPath != alreadyFoundPaths.end();)
+                for (vector<ValuetedPath*>::iterator iterComputedPath = alreadyFoundPaths.begin(); iterComputedPath != alreadyFoundPaths.end();iterComputedPath++)
                 {
                     ValuetedPath * pComputedPath = *iterComputedPath;
                     if (pComputedPath->GetPath() == pRefPath->GetPath())
                     {
                         delete pComputedPath;
-                        iterComputedPath = alreadyFoundPaths.erase(iterComputedPath);
+                        alreadyFoundPaths.erase(iterComputedPath);
                         break;
                     }
-                    ++iterComputedPath;
                 }
             }
 
