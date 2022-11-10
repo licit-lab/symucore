@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 #pragma warning(push)
 #pragma warning(disable : 4251)
@@ -34,6 +35,8 @@ public:
     Motive* GetMotive() const;
     double GetInitialWalkSpeed() const;
     double GetInitialWalkRadius() const;
+    double GetCostFunctionWeight(CostFunction function) const;
+    std::map<CostFunction, double> GetCostFunctionWeightMap() const;
 
     void SetListUsers(const std::vector<Trip *> &listUsers);
     void SetPopulation(Population *pPopulation);
@@ -41,8 +44,7 @@ public:
     void SetMotive(Motive *Motive);
     void SetInitialWalkSpeed(double dbWalkSpeed);
     void SetInitialWalkRadius(double dbWalkRadius);
-
-
+    void SetCostFunctionWeight(CostFunction function, double dWeight);
 
 protected:
     std::string                    m_strName; // name of this SubPopulation
@@ -51,6 +53,7 @@ protected:
     Motive*                        m_pMotive; //Motive for the SubPopulation
     double                         m_dbInitialWalkSpeed; //Initial walking speed (default defined in Population)
     double                         m_dbInitialWalkRadius;//Initial walk radius (default defined in Population)
+    std::map<CostFunction, double> m_costFunctionWeightMap;//Weight of Cost Functions for this sub population
 };
 }
 

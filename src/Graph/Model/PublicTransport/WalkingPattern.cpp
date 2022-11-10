@@ -35,15 +35,13 @@ double WalkingPattern::getWalkLength() const
     return m_dbLength;
 }
 
-void WalkingPattern::prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions, int nbSimulationInstances, int iInstance)
+void WalkingPattern::prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, int nbSimulationInstances, int iInstance)
 {
     m_CostBySubPopulation.clear();
 
     for (size_t iSubPop = 0; iSubPop < listSubPopulations.size(); iSubPop++)
     {
         SubPopulation * pSubPop = listSubPopulations[iSubPop];
-
-        assert(mapCostFunctions.at(pSubPop) == CF_TravelTime || mapCostFunctions.at(pSubPop) == CF_Marginals);
 
         Cost & cost = m_CostBySubPopulation[pSubPop];
 
@@ -73,9 +71,8 @@ void WalkingPattern::prepareTimeFrames(double startPeriodTime, double endPeriodT
         }
 
         // marginals = travel times for walk patterns for now...
-        cost.setTravelTime(dbTravelTime);
-        cost.setUsedCostValue(dbTravelTime);
-        cost.setOtherCostValue(mapCostFunctions.at(pSubPop) == CF_TravelTime ? CF_Marginals : CF_TravelTime, dbTravelTime);
+        cost.setCostValue(CF_TravelTime, dbTravelTime);
+        cost.setCostValue(CF_Marginals, dbTravelTime);
     }
 }
 
@@ -90,7 +87,7 @@ std::string WalkingPattern::toString() const
     return "Walk";
 }
 
-void WalkingPattern::fillMeasuredCostsForTravelTimesUpdatePeriod(int iTravelTimesUpdatePeriodIndex, const std::vector<SubPopulation*>& listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions)
+void WalkingPattern::fillMeasuredCostsForTravelTimesUpdatePeriod(int iTravelTimesUpdatePeriodIndex, const std::vector<SubPopulation*>& listSubPopulations)
 {
     // nothing : constant cost for now...
 }

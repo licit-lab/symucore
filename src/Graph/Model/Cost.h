@@ -18,33 +18,28 @@ class SYMUCORE_DLL_DEF Cost {
 
 public:
 
-    Cost();
-    Cost(double dCostValue, double dTravelTime);
+    static std::map<std::string ,CostFunction> CF_NameMap;
+
+    Cost(double dCostValue = 0, CostFunction eCostFunction = CF_TravelTime);
     virtual ~Cost();
 
     //getters
 	double getCostValue() const;
-	double getTravelTime() const;
-    double getOtherCostValue(CostFunction eCostFunction) const;
-
     double getCostValue(CostFunction eCostFunction) const;
 
     //setters
-    void setUsedCostValue(double dCostValue);
-	void setTravelTime(double dTravelTime);
-    void setOtherCostValue(CostFunction eCostFunction, double dbValue);
-
+    void setUsedCostFunction(CostFunction eCostFunction);
+    void setCostValue(CostFunction eCostFunction, double dbValue);
+    void sumCostFunctions(std::map<CostFunction, double> weights);
 
     void plus(Cost *otherCost);
 
 private:
 
-    double m_dbCostValue;
-	double m_dbTravelTime; // in seconds
-    std::map<CostFunction, double> m_mapOtherCosts;
+    CostFunction m_usedCostFunction;
+    std::map<CostFunction, double> m_costsMap;
 };
 }
-
 #pragma warning(pop)
 
 #endif // SYMUCORE_PATTERNSSWITCH_H

@@ -23,12 +23,12 @@ public:
     WalkingPattern(Link* pLink, bool bIsInitialPattern, bool bUseRealLength, double dbLength);
     virtual ~WalkingPattern();
 
-    virtual void prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions, int nbSimulationInstances, int iInstance);
+    virtual void prepareTimeFrames(double startPeriodTime, double endPeriodTime, double travelTimesUpdatePeriod, const std::vector<SubPopulation*>& listSubPopulations, int nbSimulationInstances, int iInstance);
     virtual Cost* getPatternCost(int iSimulationInstance, double t, SubPopulation* pSubPopulation);
 
     virtual std::string toString() const;
 
-    virtual void fillMeasuredCostsForTravelTimesUpdatePeriod(int iTravelTimesUpdatePeriodIndex, const std::vector<SubPopulation*>& listSubPopulations, const std::map<SymuCore::SubPopulation*, SymuCore::CostFunction> & mapCostFunctions);
+    virtual void fillMeasuredCostsForTravelTimesUpdatePeriod(int iTravelTimesUpdatePeriodIndex, const std::vector<SubPopulation*>& listSubPopulations);
 
     std::map<SubPopulation*, Cost> & GetCostBySubPopulation();
     double getWalkLength() const;
