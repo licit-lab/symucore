@@ -47,7 +47,7 @@ namespace SymuCore {
     enum CostFunction     //define each possible cost function here
     {
         CF_Undefined = 0,
-        CF_Modified_Cost,
+        //CF_Modified_Cost,
         CF_Total_Cost_Sum,
         CF_DriveTime,
         CF_PassiveRideTime,

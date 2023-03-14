@@ -484,19 +484,19 @@ Cost Dijkstra::GetTotalPatternCost(int iSimulationInstance, Pattern* pPattern, d
             {
                 // Special case of null cost patterns (touching areas with null area costs used by SymuVia for example),
                 // we use directly the percentage as the penalized cost to avoid infinite loops when computing k-shortest paths
-                resCost.setCostValue(CF_Modified_Cost, penalysingFactor);
+                resCost.setCostValue(CF_TravelTime, penalysingFactor);
             }
             else
             {
-                resCost.setCostValue(CF_Modified_Cost, pCost->getCostValue() * (1 + penalysingFactor));
+                resCost.setCostValue(CF_TravelTime, pCost->getCostValue() * (1 + penalysingFactor));
             }
         }
-        resCost.setUsedCostFunction(CF_Modified_Cost);
+        resCost.setUsedCostFunction(CF_TravelTime);
 
         // if euclidian heuristic, add the functional class related term :
         if (m_eHeuristic == SPH_EUCLIDIAN)
         {
-            resCost.setCostValue(CF_Modified_Cost, resCost.getCostValue() + pCost->getCostValue() * m_dbAStarBeta * pPattern->getFuncClass());
+            resCost.setCostValue(CF_TravelTime, resCost.getCostValue() + pCost->getCostValue() * m_dbAStarBeta * pPattern->getFuncClass());
         }
 
         return resCost;

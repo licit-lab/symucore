@@ -57,3 +57,10 @@ _deps
 
 .vscode
 build
+src/Graph/Algorithms/SymuMaster.log
+src/Graph/Model/SymuMaster.log
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/symucore.iml
+.idea/vcs.xml
