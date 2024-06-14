@@ -18,7 +18,7 @@ conda activate symucore
 mkdir build
 cd build
 cmake .. -DCMAKE_PREFIX_PATH=$CONDA_PREFIX -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
-make -j install
+cmake --build . --target install --config Release
 ```
 
 ### From Conda:

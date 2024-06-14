@@ -372,7 +372,7 @@ double SymuCore::RobustTravelTimesHelper::GetRobustTravelTime(double dbSpatialVe
 				{
 					m_RegressionType = REG_LINEAR;
 
-					polyCoefs.empty();
+					polyCoefs.clear();
 					polyCoefs = polyfit2(oX, oY, 1);
 					if (polyCoefs.empty())
 					{
@@ -394,8 +394,8 @@ double SymuCore::RobustTravelTimesHelper::GetRobustTravelTime(double dbSpatialVe
 								if (std::max(m_dbMinTravelTime, vctClasses[iClass]->GetTT()) > std::max(m_dbMinTravelTime, vctClasses[iClass + 1]->GetTT()))
 									break;
 							}
-							oX.empty();
-							oY.empty();
+							oX.clear();
+							oY.clear();
 							for (size_t i = 0; i <= iClass; i++)
 							{
 								oX.push_back(vctClasses[i]->GetMiddle());
@@ -403,7 +403,7 @@ double SymuCore::RobustTravelTimesHelper::GetRobustTravelTime(double dbSpatialVe
 							}
 							if (oX.size() > 1)
 							{
-								polyCoefs.empty();
+								polyCoefs.clear();
 								polyCoefs = polyfit2(oX, oY, 1);
 								if (polyCoefs.empty())
 								{

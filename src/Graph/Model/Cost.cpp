@@ -45,7 +45,7 @@ double Cost::getCostValue() const
     try{
 	    return m_costsMap.at(m_usedCostFunction);
     }
-    catch (const std::out_of_range& oor) {
+    catch (const std::out_of_range&) {
         //If Cost not found, it is not yet defined
         return 0;
     }
@@ -86,7 +86,7 @@ void Cost::sumCostFunctions(std::map<CostFunction, double> weights)
         {
             weightedCost = m_costsMap.at(it->first) * weight;
         }
-        catch (const std::out_of_range& oor) {
+        catch (const std::out_of_range&) {
             //If Cost not found, it is not yet defined, let it be 0
         }
         catch(const std::exception e){

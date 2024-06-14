@@ -6,6 +6,7 @@
 #include "SymuCoreExports.h"
 #include "TravelTimeClass.h"
 #include <vector>
+#include <string>
 
 #pragma warning(push)
 #pragma warning(disable : 4251)

@@ -8,6 +8,7 @@
 #include "Utils/SymuCoreConstants.h"
 
 #include <map>
+#include <string>
 
 #pragma warning(push)
 #pragma warning(disable : 4251)
