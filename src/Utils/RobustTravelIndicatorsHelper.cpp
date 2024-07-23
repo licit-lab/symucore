@@ -416,7 +416,7 @@ double SymuCore::RobustTravelIndicatorsHelper::GetRobustTravelIndicator(double d
 
 					//std::cout << "REG_LINEAR" << std::endl;
 
-					polyCoefs.empty();
+					polyCoefs.clear();
 					polyCoefs = polyfit2(oX, oY, 1);
 
 					//std::cout << std::endl << polyCoefs[2] << " " << polyCoefs[1] << " " << polyCoefs[0] << std::endl;
@@ -449,8 +449,8 @@ double SymuCore::RobustTravelIndicatorsHelper::GetRobustTravelIndicator(double d
 								if (m_indicator == speed && std::min(m_dbLBTravelIndicator, vctClasses[iClass]->GetTravelSpeed()) < std::min(m_dbLBTravelIndicator, vctClasses[iClass + 1]->GetTravelSpeed()))
 									break;
 							}
-							oX.empty();
-							oY.empty();
+							oX.clear();
+							oY.clear();
 							for (size_t i = 0; i <= iClass; i++)
 							{
 								oX.push_back(vctClasses[i]->GetMiddle());
@@ -462,7 +462,7 @@ double SymuCore::RobustTravelIndicatorsHelper::GetRobustTravelIndicator(double d
 							}
 							if (oX.size() > 1)
 							{
-								polyCoefs.empty();
+								polyCoefs.clear();
 								polyCoefs = polyfit2(oX, oY, 1);
 								//std::cout << "l 457 " << polyCoefs[2] << " " << polyCoefs[1] << " " << polyCoefs[0] << std::endl;
 								if (polyCoefs.empty())
