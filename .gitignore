@@ -64,3 +64,4 @@ src/Graph/Model/SymuMaster.log
 .idea/modules.xml
 .idea/symucore.iml
 .idea/vcs.xml
+.DS_Store

@@ -4,6 +4,9 @@ Core objects and algorithms for the SymuVia ecosystem.
 
 ## Installation
 
+## Requirements
+Cmake installation
+
 ### From sources:
 
 Create the conda environnement:
